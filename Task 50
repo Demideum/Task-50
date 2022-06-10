@@ -1,0 +1,216 @@
+namespace Task_50
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Zoo zoo = new Zoo();
+            zoo.StartExcursion();
+            Console.ReadLine();
+        }
+    }
+
+    class Zoo
+    {
+        private List<Aviary> _aviaries = new List<Aviary>();
+
+        public void StartExcursion()
+        {
+            CreativeAviary(4);
+            bool isWork = true;
+
+            while (isWork)
+            {
+                Console.WriteLine($"Welcome to the zoo, we have {_aviaries.Count} aviaries with animals. " +
+                    "\nTo start a tour, enter Start" +
+                    ". To exit, type Exit");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "Start":
+                        ShowAviary();
+                        break;
+                    case "Exit":
+                        isWork = false;
+                        break;
+                    default:
+                        Console.WriteLine("Error. Try again!");
+                        break;
+                }
+
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private void CreativeAviary(int numberOfAviary)
+        {
+            for (int i = 0; i < numberOfAviary; i++)
+            {
+                _aviaries.Add(new Aviary());
+            }
+        }
+
+        private void ShowAviary()
+        {
+            Console.Write("\nWhich aviary do you want to see?: ");
+            bool isNumber = int.TryParse(Console.ReadLine(), out int inputNumberAviary);
+
+            if (isNumber == false)
+            {
+                Console.WriteLine("\nError. Try again!");
+            }
+            else if (inputNumberAviary > 0 && inputNumberAviary < _aviaries.Count)
+            {
+                Console.WriteLine($"\nAviary № {inputNumberAviary}");
+                _aviaries[inputNumberAviary - 1].ShowAnimal();
+            }
+            else
+            {
+                Console.WriteLine("\nError. Try again!");
+            }
+        }
+    }
+
+    class Aviary
+    {
+        private List<Animal> _animals = new List<Animal>();
+        private int _numberOfAnimas = 10;
+        private Random _random = new Random();
+
+        public Aviary()
+        {
+            CreateNewAviary(_numberOfAnimas, _animals);
+        }
+
+        public void ShowAnimal()
+        {
+            Console.WriteLine($"\nThe number of animals in the aviary - {_animals.Count}");
+
+            foreach (var animal in _animals)
+            {
+                Console.WriteLine($"This is {animal.Gender} {animal.Name}, which makes a voice {animal.Voice}");
+            }
+        }
+
+        private void CreateNewAviary(int numberOfAnimas, List<Animal> Animal)
+        {
+            for (int i = 0; i < numberOfAnimas; i++)
+            {
+                Animal.Add(GetAnimal());
+            }
+        }
+
+        private Animal GetAnimal()
+        {
+            int minimumNumberAnimal = 0;
+            int maximumNumberAnimal = 6;
+            int newAnimal = _random.Next(minimumNumberAnimal, maximumNumberAnimal);
+
+            if (newAnimal == 1)
+            {
+                return new Bear("Bear");
+            }
+            else if (newAnimal == 2)
+            {
+                return new Fox("Fox");
+            }
+            else if (newAnimal == 3)
+            {
+                return new Wolf("Wolf");
+            }
+            else if (newAnimal == 4)
+            {
+                return new Badger("Badger");
+            }
+            else if (newAnimal == 5)
+            {
+                return new Coon("Coon");
+            }
+            else
+            {
+                return new Hedgehog("Hedgehog");
+            }
+        }
+    }
+
+    class Animal
+    {
+        private Random _random = new Random();
+        public string Name { get; protected set; }
+        public string Gender { get; protected set; }
+        public string Voice { get; protected set; }
+
+        public Animal(string name)
+        {
+            Name = name;
+            Gender = GetGenderAnimal();
+            Voice = "";
+        }
+
+        private string GetGenderAnimal()
+        {
+            int minimumNumberGender = 0;
+            int maximumNumberGender = 2;
+            int gender = _random.Next(minimumNumberGender, maximumNumberGender);
+
+            if (gender == 1)
+            {
+                return "Male";
+            }
+            else
+            {
+                return "Female";
+            }
+        }
+    }
+
+    class Bear : Animal
+    {
+        public Bear(string name) : base(name)
+        {
+            Voice = "Agrrrr";
+        }
+    }
+
+    class Fox : Animal
+    {
+        public Fox(string name) : base(name)
+        {
+            Voice = "Fffff";
+        }
+    }
+
+    class Wolf : Animal
+    {
+        public Wolf(string name) : base(name)
+        {
+            Voice = "Auuufff";
+        }
+    }
+
+    class Badger : Animal
+    {
+        public Badger(string name) : base(name)
+        {
+            Voice = "Grrr";
+        }
+    }
+
+    class Coon : Animal
+    {
+        public Coon(string name) : base(name)
+        {
+            Voice = "Ur urrr";
+        }
+    }
+
+    class Hedgehog : Animal
+    {
+        public Hedgehog(string name) : base(name)
+        {
+            Voice = "Frr frr";
+        }
+    }
+}
